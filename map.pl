@@ -23,16 +23,17 @@ map_object(5, 1, 'Q').
 /*map size*/
 map_size(10, 10).
 map:-
-    /*game_start(true),!,*/
-    draw_map.
-map:-   !,
-    	write('Legend:'),nl,
-		write('P: Player'),nl,
-		write('Q: Quest'),nl,
-		write('D: Dragon'),nl,
-		write('S: Shop'),nl,
-		write('#: Border'),nl.
-
+    start_flag(true), !,
+    draw_map,
+	write('Legend:'),nl,
+	write('P: Player'),nl,
+	write('Q: Quest'),nl,
+	write('D: Dragon'),nl,
+	write('S: Shop'),nl,
+	write('#: Border'),nl.
+map:-   
+	!,
+    write('Please start the game. Type \'start.\'').
 
 /*map borders*/
 /*right border*/
@@ -103,12 +104,11 @@ draw_point(X, Y) :- map_size(W, H),
 draw_map :- draw_point(0, 0).
 
 
-/*encounter codes*/
-
 /*movement codes*/
 
 /*w*/
 w:-
+	start_flag(true),
 	map_object(X,Y,'P'),
     YNew is Y-1,
     (\+ map_object(X, YNew, 'Q')),
@@ -118,8 +118,14 @@ w:-
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(X,YNew,'P')).
+
+w:-
+	start_flag(false),
+    !,
+    write('Please start the game. Type \'start.\'').
 /*s*/
-s :-	
+s :-
+	start_flag(true),	
 	map_object(X,Y,'P'),
     YNew is Y+1,
     (\+ map_object(X, YNew, 'Q')),
@@ -129,8 +135,14 @@ s :-
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(X,YNew,'P')).
+
+s :- 
+	start_flag(false),
+    !,
+    write('Please start the game. Type \'start.\'').
 /*a*/
 a :-
+	start_flag(true),
 	map_object(X,Y,'P'),
     XNew is X-1,
     (\+ map_object(XNew, Y, 'Q')),
@@ -140,8 +152,14 @@ a :-
     XNew > 0, XNew =< W, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(XNew,Y,'P')).
+
+a :-
+	start_flag(false),
+    !,
+    write('Please start the game. Type \'start.\'').
 /*d*/
 d:-
+	start_flag(true),
     map_object(X,Y,'P'),
     XNew is X+1,
     (\+ map_object(XNew, Y, 'Q')),
@@ -152,3 +170,7 @@ d:-
     retract(map_object(X, Y, 'P')),
     assertz(map_object(XNew,Y,'P')).
 
+d :-
+    start_flag(false),
+    !,
+    write('Please start the game. Type \'start.\'').
