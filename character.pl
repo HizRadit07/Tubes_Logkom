@@ -23,7 +23,7 @@ character_level(1).
 
 character_xp(0).
 
-character_gold(50).
+character_gold(5000).
 
 
 
@@ -96,7 +96,7 @@ add_base_stat(X, Y, Z) :-
   assertz(character_status(Class, A1, B1, C1)).
 
 weapon(none, _, 0).
-weapon(greatsword, swordsman, 25).
+weapon(greatsword, 1, 25).
 armor(none, _, 0).
 
 
@@ -125,3 +125,20 @@ equip_armor(Armor) :-
   retract(current_armor(X)),
   assertz(current_armor(Armor)),
   add_char_def(Def).
+
+status :-
+  character_status(Class, HP, Atk, Def),
+  base_stat(HP1, _, _),
+  current_class(Class, ClassName),
+  character_level(Level),
+  character_xp(Xp),
+  character_gold(Gold),
+  format('Class : ~w ~n', [ClassName]),
+  format('Level : ~w ~n', [Level]),
+  format('Health : ~w/~w ~n', [HP, HP1]),
+  format('Attack : ~w ~n', [Atk]),
+  format('Defense : ~w ~n', [Def]),
+  Exp is (Level-1)*400 + Xp,
+  Y is Level * 400,
+  format('Exp : ~w/~w ~n', [Exp, Y]),
+  format('Gold : ~w ~n', [Gold]), !.
