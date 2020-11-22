@@ -49,7 +49,9 @@ start:-
 
     write('You choose '),
     write(ClassName),
-    write(', lets explore the world!').
+    write(', lets explore the world!'),
+    /*initialize player*/
+    assertz(map_object(1,1, 'P')).
 
 exit :-
     start_flag(true),
