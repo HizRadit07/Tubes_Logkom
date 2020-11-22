@@ -1,3 +1,4 @@
+:- dynamic(current_class/2).
 :- dynamic(character_status/4).
 :- dynamic(base_stat/3).
 :- dynamic(character_level/1).
@@ -6,12 +7,17 @@
 :- dynamic(current_weapon/1).
 :- dynamic(current_armor/1).
 
-character_class(swordsman, 90, 20, 30). /*class, hp, atk, def*/
-character_class(archer, 80, 30, 30).
-character_class(sorcerer, 80, 40, 20).
+% current_class(ID,Nama)
+current_class(1,'swordsman').
+current_class(2,'archer').
+current_class(3,'sorcerer').
 
-character_status(none, 0, 0, 0). /*class, hp, atk, def*/
-base_stat(0, 0, 0). /*hp, atk, def*/
+character_class(1, 90, 20, 30). % /*classID, hp, atk, def*/
+character_class(2, 80, 30, 30).
+character_class(3, 80, 40, 20).
+
+character_status(none, 0, 0, 0). % /*class, hp, atk, def*/
+base_stat(0, 0, 0). % /*hp, atk, def*/
 
 character_level(1).
 
@@ -39,7 +45,7 @@ levelup(A) :-
   X is Z + 1,
   retract(character_level(Z)),
   assertz(character_level(X)),
-  add_base_stat(10, 10, 10), /*Semua stat ditambah 10*/
+  add_base_stat(10, 10, 10), % /*Semua stat ditambah 10*/
   levelup(Y).
 
 levelup(A) :-

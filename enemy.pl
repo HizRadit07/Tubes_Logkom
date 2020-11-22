@@ -4,9 +4,9 @@ enemy_class(goblin).
 enemy_class(slime).
 enemy_class(direwolf).
 
-enemy_status(goblin, 1, 50, 10, 10). /*(class, level, hp, attack,defense)*/
-enemy_status(slime, 1, ).
-enemy_status(direwolf, 1, )
+enemy_status(goblin, 1, 5, 10, 10). /*(class, level, hp, attack,defense)*/
+enemy_status(slime, 1, 10, 20, 20 ).
+enemy_status(direwolf, 1, 15, 25, 25 ).
 
 enemy_status(goblin, A, B, C, D) :-
   A > 1,
