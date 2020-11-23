@@ -26,7 +26,12 @@ character_xp(0).
 character_gold(5000).
 
 
-
+/*Menambah Gold*/
+add_gold(X):-
+  character_gold(Y),
+  Z is X + Y,
+  retract(character_gold(Y)),
+  assertz(character_gold(Z)).
 /*Menambah Xp Player*/
 add_xp(X):-
   character_xp(Y),

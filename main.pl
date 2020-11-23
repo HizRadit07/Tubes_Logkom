@@ -12,6 +12,7 @@ start_flag(false).
 :- include('inventory.pl').
 :- include('store.pl').
 :- include('battle.pl').
+:- include('quest.pl').
 
 start:-
     ['map.pl'],
@@ -21,6 +22,7 @@ start:-
     ['inventory.pl'],
     ['store.pl'],
     ['battle.pl'],
+    ['quest.pl'],
 
     write('################################################################################'),nl,
     write('#                               Available Commands                             #'),nl,
@@ -35,7 +37,7 @@ start:-
     write('# 10. help.      : menampilkan segala bantuan                                  #'),nl,
     write('################################################################################'),nl, nl,
 
-    retract(start_flag(false)), 
+    retract(start_flag(false)),
     !,
     asserta(start_flag(true)),
 
@@ -63,4 +65,3 @@ exit :-
     retract(start_flag(true)),
     assertz(start_flag(false)),
     write('Thank you, see you next time').
-
