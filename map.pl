@@ -8,8 +8,6 @@ map_object(4, 5, '#').
 map_object(5, 8, '#').
 map_object(6, 8, '#').
 map_object(7, 8, '#').
-/*the player tile*/
-map_object(1, 1, 'P').
 /*the boss tile*/
 map_object(10, 10, 'D').
 /*the shop tile*/
