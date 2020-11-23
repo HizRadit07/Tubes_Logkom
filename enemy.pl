@@ -1,4 +1,4 @@
-:- dynamic(current_enemy/3).
+:- dynamic(current_enemy/3). /*enemy yang lagi battle*/
 
 enemy_class(1, goblin).
 enemy_class(2, slime).
