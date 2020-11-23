@@ -1,10 +1,10 @@
 /* Predikat yang bisa aja masuk ke dalam inventory */
 
 potion:-
-    add_potions(1).
-    character_gold(X).
-    X1 is X-20.
-    retract(character_gold(X)).
+    add_potions(1),
+    character_gold(X),
+    X1 is X-20,
+    retract(character_gold(X)),
     assertz(character_gold(X1)).
 
 exitShop:-
@@ -81,6 +81,3 @@ gacha:-
     ),
     Rightboundary is TotalItem+1,
     random(1,Rightboundary,GetIdx).
-
-
-

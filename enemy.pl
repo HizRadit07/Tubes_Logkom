@@ -1,6 +1,6 @@
 :- dynamic(current_enemy/3). /*enemy yang lagi battle*/
 
-enemy_class(1, goblin).
+enemy_class(1, goblin). /*Id ClassName*/
 enemy_class(2, slime).
 enemy_class(3, direwolf).
 enemy_class(4, dragon).
@@ -37,7 +37,7 @@ enemy_status(direwolf, A, B, C, D) :-
 set_enemy(Class, Level) :-
   enemy_status(Class, Level, HP, Atk, Def),
   retractall(current_enemy(_,_,_)),
-  assertz(current_enemy(Hp, Atk, Def)).
+  assertz(current_enemy(HP, Atk, Def)).
 
 damage_enemy(X) :-
   current_enemy(HP, Atk, Def),
