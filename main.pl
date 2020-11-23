@@ -11,6 +11,7 @@ start_flag(false).
 :- include('help.pl').
 :- include('inventory.pl').
 :- include('store.pl').
+:- include('battle.pl').
 
 start:-
     ['map.pl'],
@@ -19,6 +20,7 @@ start:-
     ['enemy.pl'],
     ['inventory.pl'],
     ['store.pl'],
+    ['battle.pl'],
 
     write('################################################################################'),nl,
     write('#                               Available Commands                             #'),nl,

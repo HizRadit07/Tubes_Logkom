@@ -44,3 +44,8 @@ damage_enemy(X) :-
   HP1 is HP - X,
   retract(current_enemy(HP, Atk, Def)),
   assertz(HP1, Atk, Def).
+
+set_def_enemy(X) :-
+  current_enemy(HP, Atk, Def),
+  retract(current_enemy(HP, Atk, Def)),
+  assertz(HP, Atk, X).

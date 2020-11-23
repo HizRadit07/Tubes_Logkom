@@ -66,6 +66,11 @@ add_char_hp(X) :-
   retract(character_status(A, B, C, D)),
   assertz(character_status(A, Y, C, D)).
 
+set_char_hp(X) :-
+  character_status(A, B, C, D),
+  retract(character_status(A, B, C, D)),
+  assertz(character_status(A, X, C, D)).
+
 /*Menambah player, attack*/
 add_char_atk(X) :-
   character_status(A, B, C, D),
@@ -79,6 +84,11 @@ add_char_def(X) :-
   Y is X + D,
   retract(character_status(A, B, C, D)),
   assertz(character_status(A, B, C, Y)).
+
+set_char_def(X) :-
+  character_status(A, B, C, D),
+  retract(character_status(A, B, C, D)),
+  assertz(character_status(A, B, C, X)).
 
 /*Menambah Base stat*/
 add_base_stat(X, Y, Z) :-
