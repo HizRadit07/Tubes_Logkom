@@ -31,14 +31,14 @@ add_gold(X):-
   character_gold(Y),
   Z is X + Y,
   retract(character_gold(Y)),
-  assertz(character_gold(Z)).
+  assertz(character_gold(Z)),!.
 /*Menambah Xp Player*/
 add_xp(X):-
   character_xp(Y),
   Z is X + Y,
   retract(character_xp(Y)),
   assertz(character_xp(Z)),
-  levelup(Z).
+  levelup(Z),!.
 
 /*Level up player*/
 levelup(A) :-
@@ -69,31 +69,31 @@ add_char_hp(X) :-
   character_status(A, B, C, D),
   Y is X + B,
   retract(character_status(A, B, C, D)),
-  assertz(character_status(A, Y, C, D)).
+  assertz(character_status(A, Y, C, D)),!.
 
 set_char_hp(X) :-
   character_status(A, B, C, D),
   retract(character_status(A, B, C, D)),
-  assertz(character_status(A, X, C, D)).
+  assertz(character_status(A, X, C, D)),!.
 
 /*Menambah player, attack*/
 add_char_atk(X) :-
   character_status(A, B, C, D),
   Y is X + C,
   retract(character_status(A, B, C, D)),
-  assertz(character_status(A, B, Y, D)).
+  assertz(character_status(A, B, Y, D)),!.
 
 /*Menambah player defense*/
 add_char_def(X) :-
   character_status(A, B, C, D),
   Y is X + D,
   retract(character_status(A, B, C, D)),
-  assertz(character_status(A, B, C, Y)).
+  assertz(character_status(A, B, C, Y)),!.
 
 set_char_def(X) :-
   character_status(A, B, C, D),
   retract(character_status(A, B, C, D)),
-  assertz(character_status(A, B, C, X)).
+  assertz(character_status(A, B, C, X)),!.
 
 /*Menambah Base stat*/
 add_base_stat(X, Y, Z) :-
@@ -108,7 +108,7 @@ add_base_stat(X, Y, Z) :-
   retract(base_stat(Hp, Atk, Def)),
   assertz(base_stat(Hp1, Atk1, Def1)),
   retract(character_status(Class, A, B, C)),
-  assertz(character_status(Class, A1, B1, C1)).
+  assertz(character_status(Class, A1, B1, C1)),!.
 
 weapon(none, _, 0).
 weapon(greatsword, 1, 25).
@@ -128,7 +128,7 @@ equip_weapon(Weapon) :-
   add_char_atk(Y),
   retract(current_weapon(X)),
   assertz(current_weapon(Weapon)),
-  add_char_atk(Atk).
+  add_char_atk(Atk),!.
 
 equip_armor(Armor) :-
   armor(Armor, Class, Def),
@@ -139,7 +139,7 @@ equip_armor(Armor) :-
   add_char_def(Y),
   retract(current_armor(X)),
   assertz(current_armor(Armor)),
-  add_char_def(Def).
+  add_char_def(Def),!.
 
 status :-
   character_status(Class, HP, Atk, Def),

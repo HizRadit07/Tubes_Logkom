@@ -79,12 +79,10 @@ near_quest :-
   map_object(X, A, 'Q'),!.
 
 /*Player memilih akan menerima quest atau tidak*/
-offer_quest(X) :-
-  X =:= 2,
+offer_quest(2) :-
   retractall(quest(_,_,_,_)), !.
 
-offer_quest(X) :-
-  X =:= 1,
+offer_quest(1) :-
   assertz(c_quest(0, 0, 0)),
   retract(quest_status(0)),
   assertz(quest_status(1)), !.
@@ -92,8 +90,7 @@ offer_quest(X) :-
 /*Player belum punya quest, dan berada di dekat quest point. Player ditawari sebuah quest*/
 quest :-
   near_quest,
-  quest_status(S),
-  S =:= 0,
+  quest_status(0),
   make_quest,
   quest(Goblin, Slime, Direwolf, Reward),
   format('Kill ~w Goblin(s)~n', [Goblin]),
@@ -109,14 +106,12 @@ quest :-
 /*Player tidak punya quest dan tidak berada di quest point. Menampilkan pesan tidak ada quest*/
 quest :-
   \+ near_quest,
-  quest_status(S),
-  S =:= 0,
-  write('You have no active quest'),!.
+  quest_status(0),
+  write('You have no active quest'),nl,!.
 
 /*Player memiliki quest active. Menampilkan quest progress*/
 quest :-
-  quest_status(S),
-  S =:= 1,
+  quest_status(1),
   write('Quest Progress'), nl,
   c_quest(Goblin1, Slime1, Direwolf1),
   quest(Goblin, Slime, Direwolf, Reward),
@@ -135,7 +130,9 @@ check_quest :-
   retract(quest_status(1)),
   assertz(quest_status(0)),
   retract(c_quest(Goblin, Slime, Direwolf)),
-  add_gold(Reward),!.
+  add_gold(Reward),
+  write('Quest completed!'),nl,
+  format('You earn ~w gold~n', [Reward]),!.
 
 check_quest :-
   !.
@@ -162,20 +159,17 @@ record_direwolf :-
 /*record_kill dipanggil setiap berhasil mengalahkan enemy*/
 record_kill(EnemyClass) :-
   quest_status(1),
-  enemy_class(X, EnemyClass),
-  X =:= 1,
+  enemy_class(1, EnemyClass),
   record_goblin, !.
 
 record_kill(EnemyClass) :-
   quest_status(1),
-  enemy_class(X, EnemyClass),
-  X =:= 2,
+  enemy_class(2, EnemyClass),
   record_slime, !.
 
 record_kill(EnemyClass) :-
   quest_status(1),
-  enemy_class(X, EnemyClass),
-  X =:= 3,
+  enemy_class(3, EnemyClass),
   record_direwolf, !.
 
-record_kill(EnemyClass) :- !.
+record_kill(_) :- !.
