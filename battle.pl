@@ -18,7 +18,7 @@ startBattle :-
     retract(turn(_)),
     assertz(turn(0)),
     retract(usedSpecialatk(_, enemy)),
-    assertz(usedSpecialatk(0, enemy)), !.
+    assertz(usedSpecialatk(0, enemy)),!.
 
 /* Mekanisme run */
 run :-

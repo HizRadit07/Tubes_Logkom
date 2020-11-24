@@ -115,7 +115,8 @@ w:-
     map_size(_, H),
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
-    assertz(map_object(X,YNew,'P')).
+    assertz(map_object(X,YNew,'P')),
+	encounter.
 
 w:-
 	start_flag(false),
@@ -132,7 +133,8 @@ s :-
     map_size(_, H),
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
-    assertz(map_object(X,YNew,'P')).
+    assertz(map_object(X,YNew,'P')),
+	encounter.
 
 s :- 
 	start_flag(false),
@@ -149,7 +151,8 @@ a :-
     map_size(W, _),
     XNew > 0, XNew =< W, !,
     retract(map_object(X, Y, 'P')),
-    assertz(map_object(XNew,Y,'P')).
+    assertz(map_object(XNew,Y,'P')),
+	encounter.
 
 a :-
 	start_flag(false),
@@ -166,7 +169,8 @@ d:-
     map_size(W, _),
     XNew > 0, XNew =< W, !,
     retract(map_object(X, Y, 'P')),
-    assertz(map_object(XNew,Y,'P')).
+    assertz(map_object(XNew,Y,'P')),
+	encounter.
 
 d :-
     start_flag(false),

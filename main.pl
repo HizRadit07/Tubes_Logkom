@@ -9,20 +9,22 @@ start_flag(false).
 :- include('character.pl').
 :- include('enemy.pl').
 :- include('help.pl').
-:- include('inventory.pl').
-:- include('store.pl').
-:- include('battle.pl').
+%:- include('inventory.pl').
+%:- include('store.pl').
+%:- include('battle.pl').
 :- include('quest.pl').
+:- include('encounter.pl').
 
 start:-
     ['map.pl'],
     ['help.pl'],
     ['character.pl'],
     ['enemy.pl'],
-    ['inventory.pl'],
-    ['store.pl'],
-    ['battle.pl'],
-    ['quest.pl'],
+    %['inventory.pl'],
+    %['store.pl'],
+    %['battle.pl'],
+    %['quest.pl'],
+    ['encounter.pl'],
 
     write('################################################################################'),nl,
     write('#                               Available Commands                             #'),nl,
@@ -58,7 +60,12 @@ start:-
     write(ClassName),
     write(', lets explore the world!'),
     /*initialize player*/
-    assertz(map_object(1,1, 'P')).
+    assertz(map_object(1,1, 'P')),
+
+    /*initialize enemy*/
+    assertz(current_enemy(0,0,0)),
+    assertz(current_enemy_class(0,0)),
+    assertz(current_enemy_stat(0,0,0,0,0,0)).
 
 exit :-
     start_flag(true),
