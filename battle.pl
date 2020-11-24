@@ -1,24 +1,23 @@
 :- dynamic(usedSpecialatk/2).
 :- dynamic(turn/1).
-:- dynamic(enemy_in_battle/3).
 :- dynamic(gameState/1).
 
 /* game state nya itu baru kepikiran start, meetEnemy, fight */
 /* meetEnemy itu pas ketemu enemy, ada 2 pilihan command fight sama run */
 /* fight itu pas gagal run atau emang milih fight ada pilihan attack, specialAttack, usePotion, run */
-/* use healing&atk potion belum, nentuin damage special atk, mekanisme special atk enemy, baru kepikiran itu */
+/* use atk potion belum */
 
 /* Buat set GameState nya, baru kepikiran start, meetEnemy, fight */
 setGameState(State) :-
     retract((gameState(_))),
-    assertz(game(Game)), !.
+    assertz(game(State)), !.
 
 /* Inisialisasi battle */
 startBattle :-
     retract(turn(_)),
     assertz(turn(0)),
     retract(usedSpecialatk(_, enemy)),
-    assertz(usedSpecialatk(0, enemy)),!.
+    assertz(usedSpecialatk(0, enemy)), !.
 
 /* Mekanisme run */
 run :-
@@ -36,7 +35,8 @@ run :-
 /* Attack, specialAttack */
 attack :-
     gameState(fight),
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy, Atk_enemy, Def_enemy),
     character_status(Player, HP_player, Atk_player, Def_player),
     write('Attacking enemy'),
     nl,
@@ -45,7 +45,6 @@ attack :-
     ((Damage < 0) -> (Total_dmg is 0, Newdef_enemy is Def_enemy-Atk_player));((Damage >= 0) -> (Total_dmg is Damage, Newdef_enemy is 0)),
     write(Classenemy), write(' took '), write(Total_dmg), write(' damage'),
     nl,
-    NewHP is HP-Total_dmg,
     damage_enemy(Total_dmg),
     set_def_enemy(Newdef_enemy),
     cekStatus, !.
@@ -57,14 +56,14 @@ attack :-
 special_attack :-
     gameState(fight),
     turn(X), (X+2)/2 mod 3 == 0,
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy, Atk_enemy, Def_enemy),
     character_status(Player, HP_player, Atk_player, Def_player),
-    ((Player == swordsman) -> Atk_player is 0 /* Penambahan atk nya */);((Player == archer) -> Atk_player is 0);((Player == sorcerer) -> Atk_player is 0),
+    Atk_player1 is 2.5 * Atk_player,
     write('Attacking enemy'),
     nl,
-    /* mekanisme yang equip weapon belom dimasukkin */
-    Damage is Atk_player - Def_enemy,
-    ((Damage < 0) -> (Total_dmg is 0, Newdef_enemy is Def_enemy-Atk_player));((Damage >= 0) -> (Total_dmg is Damage, Newdef_enemy is 0)),
+    Damage is Atk_player1 - Def_enemy,
+    ((Damage < 0) -> (Total_dmg is 0, Newdef_enemy is Def_enemy-Atk_player1));((Damage >= 0) -> (Total_dmg is Damage, Newdef_enemy is 0)),
     write(Classenemy), write(' took '), write(Total_dmg), write(' damage'),
     nl,
     damage_enemy(Total_dmg),
@@ -82,15 +81,17 @@ special_attack :-
 
 /* Enemy attack */
 enemyAttack :-
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy, Atk_enemy, Def_enemy),
     character_status(Player, HP_player, Atk_player, Def_player),
-    /* mekanisme special attack buat enemy belum dimasukin */
-    Damage is Atk_enemy - Def_player,
-    ((Damage < 0) -> (Total_dmg is 0, Newdef_player is Def_player-Atk_enemy));((Damage >= 0) -> (Total_dmg is Damage, Newdef_player is 0)),
+    (((HP_player < 50) -> Atk_enemy1 is 2*Atk_enemy);
+    (Atk_enemy1 is Atk_player)),
+    Damage is Atk_enemy1 - Def_player,
+    ((Damage < 0) -> (Total_dmg is 0, Newdef_player is Def_player-Atk_enemy1));((Damage >= 0) -> (Total_dmg is Damage, Newdef_player is 0)),
     write(Player), write(' took '), write(Total_dmg), write(' damage'),
     nl,
     NewHP is HP-Total_dmg,
-    set_char_hp(NewHP), /* Ini buat ngubah HP sama Def dari enemy */
+    set_char_hp(NewHP),
     set_char_def(Newdef_player),
     cekStatus, !.
     
@@ -106,13 +107,17 @@ playerTurn :-
 
 /* fail and win battle */
 failState :-
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
     write('You failed to defeat the '), write(Classenemy), nl,
     halt, !.
 
 winBattle :-
-    write('You won the battle'), nl.
-/* Nanti update exp gold quest */
+    write('You won the battle'), nl,
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy, Atk_enemy, Def_enemy),
+    recorn_kill(Classenemy),
+    setGameState(start).
+
 
 /* Next turn */
 nextTurn :-
@@ -126,15 +131,16 @@ battle :-
     ((X mod 2 == 0) -> playerTurn; (X mod 2 == 1) -> enemyTurn), !.
 
 cekStatus :-
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
-    character_status(Player, HP_player, Atk_player, Def_player),
+    current_enemy(HP_enemy,_,_),
+    character_status(_,HP_player,_,_),
     
-    (HP_player =< 0 -> failState;
-    HP_enemy =< 0 -> winBattle; nextTurn, battle), !.
+    ((HP_player =< 0 -> failState);
+    (HP_enemy =< 0 -> winBattle; nextTurn, battle)), !.
 
 hpStat :-
-    current_enemy(Classenemy, Lvl_Enemy, HP_enemy, Atk_enemy, Def_enemy),
-    character_status(Player, Hp_player, Atk_player, Def_player),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy,_,_),
+    character_status(Player, Hp_player,_,_),
     write('HP '), write(Player), write(' : '), write(Hp_player),
     nl,
     write('HP '), write(Classenemy), write(' : '), write(HP_enemy), !.
@@ -145,6 +151,15 @@ fight :-
     startBattle,
     write('Battle begin'), nl,
     battle, !.
+
+usePotion :-
+    gameState(fight),
+    total_potions(N),
+    current_enemy_stat(_,Classenemy,_,_,_,_),
+    current_enemy(HP_enemy, Atk_enemy, Def_enemy),
+    character_status(_,HP_player,_,_),
+    base_stat(BaseHP,_,_),
+    ((N =\= 0) -> ((((HP_player+100 =< BaseHP) -> NewHP is HP_player+100); NewHP is BaseHP), write('You heal 100 HP'), nl, set_char_hp(NewHP), consume_potion, nextTurn, battle);write('You dont have enough potion'), nl, battle).
     
     
 

@@ -9,9 +9,9 @@ start_flag(false).
 :- include('character.pl').
 :- include('enemy.pl').
 :- include('help.pl').
-%:- include('inventory.pl').
-%:- include('store.pl').
-%:- include('battle.pl').
+:- include('inventory.pl').
+:- include('store.pl').
+:- include('battle.pl').
 :- include('quest.pl').
 :- include('encounter.pl').
 
@@ -20,10 +20,10 @@ start:-
     ['help.pl'],
     ['character.pl'],
     ['enemy.pl'],
-    %['inventory.pl'],
-    %['store.pl'],
-    %['battle.pl'],
-    %['quest.pl'],
+    ['inventory.pl'],
+    ['store.pl'],
+    ['battle.pl'],
+    ['quest.pl'],
     ['encounter.pl'],
 
     write('################################################################################'),nl,
@@ -65,7 +65,8 @@ start:-
     /*initialize enemy*/
     assertz(current_enemy(0,0,0)),
     assertz(current_enemy_class(0,0)),
-    assertz(current_enemy_stat(0,0,0,0,0,0)).
+    assertz(current_enemy_stat(0,0,0,0,0,0)),
+    setGameState(start).
 
 exit :-
     start_flag(true),

@@ -21,8 +21,9 @@ encounter :-
     write('Attack: '),
     write(Atk),nl,
     write('Defense: '),
-    write(Def),nl.
+    write(Def),nl,
 
-
+    write('Type "fight" to begin battle or "run" to run'),
+    setGameState(meetEnemy).
 
     /*@PRANA NANTI SAMBUNGIN KE BATTLENYA DI LINE YG INI*/
