@@ -1,11 +1,13 @@
 /* Predikat yang bisa aja masuk ke dalam inventory */
 :- dynamic(generate_number/1).
+:- dynamic(in_shop/1).
 
 generate_number(53).
 
-
+in_shop(false).
 
 potion:-
+    in_shop(true),!,
     character_gold(X),
     (
         ((X<10)->
@@ -22,7 +24,14 @@ potion:-
         )
     ).
 
+% potion fail state    
+potion:-
+    in_shop(false),!,
+    write('*random Shopkeeper whisper*'),nl,
+    write('There is a time and place for everything, but not now.'),nl.
+
 attackPotion:-
+    in_shop(true),!,
     character_gold(X),
     (
         ((X<15)->
@@ -39,8 +48,40 @@ attackPotion:-
         )
     ).
 
+% attackPotion fail state
+attackPotion:-
+    in_shop(false),!,
+    write('*random Shopkeeper whisper*'),nl,
+    write('There is a time and place for everything, but not now.'),nl.
+
+shop:-
+    /*Ngecek w,a,s,d ada shop apa nggak */
+    map_object(X,Y,'P'),
+    Xplus is X+1,
+    Xmin is X-1,
+    Yplus is Y+1,
+    Ymin is Y-1,
+    (
+        
+    ),!,
+    retract(in_shop(false)),
+    assertz(in_shop(true)),
+    write('Welcome to the Gravekeeper Shop!'),nl,
+    write('We serve for our greatest.'),nl,nl,
+    write('What do you want to buy, Young Explorer?'),nl,
+    write('1. gacha. (100 Gold)'),nl,
+    write('2. potion. (10 Gold)'),nl,
+    write('3. attackPotion. (15 Gold)'),nl.
+
+% shop fail state
+shop:-
+    in_shop(false),!,
+    write('You are not around the nearest shop.'),nl.
+
 exitShop:-
-    write('Thanks for coming.').
+    write('Thanks for coming.'),nl,
+    retract(in_shop(true)),
+    assertz(in_shop(false)).
 
 gachaItem(1,'Sword','weapon','Swordsman',23).
 gachaItem(2,'Black Sword','weapon','Swordsman',25).
@@ -72,8 +113,6 @@ gachaItem(27,'Slytherin Cloak','accesories','Sorcerer',45).
 
 total_Gacha_Item(27).
 
-in_shop(false).
-
 /*Bekas gunain list*/
 /*len([],Y):- Y is 0.
 len([_|Xs],Y):-
@@ -96,15 +135,19 @@ elemt(X,_A,Result):-
 gacha:-
 /*  jadi gacha ini teknisnya dia bakal ngerandom list possible itemnya
     terus ntar keluarin headnya gitu*/
+    in_shop(true),!,
     character_gold(Gold),
     (
         ((Gold<100)->
             write('Your Gold is not enough to buy a gacha.'),nl
         );
         (
+            % gold decrement
             Gold1 is Gold-100,
             retract(character_gold(Gold)),
             assertz(character_gold(Gold1)),
+
+            % randoming Random_Number
             total_Gacha_Item(Divisor),
             generate_number(M),
             Upperbound is M+1,
@@ -113,6 +156,8 @@ gacha:-
             random(1,Upperbound,IdxRaw),
             IdxRaw1 is IdxRaw mod Divisor,
             Random_Number is IdxRaw1+1,
+
+            % get an item
             gachaItem(Random_Number,Name,Type,Class,Stats),
             write('You get '),write(Name),write(' (+'),write(Stats),
             (
@@ -134,4 +179,8 @@ gacha:-
         )
     ).
 
-    
+% fail state gacha
+gacha:-
+    in_shop(false),!,
+    write('*random Shopkeeper whisper*'),nl,
+    write('There is a time and place for everything, but not now.'),nl.    
