@@ -37,20 +37,29 @@ enemy_status(ID,'direwolf', A, B, C, D) :-
   D is D1 + 5.
 
 set_enemy(ID, Level) :-
-  enemy_status(ID,_, Level, HP, Atk, Def),
+  enemy_status(ID,Class, Level, HP, Atk, Def),
   retractall(current_enemy(_,_,_)),
+  retractall(current_enemy_stat(_,_,_,_,_)),
+  assertz(current_enemy_stat(ID,Class,Level,HP,Atk,Def)),
   assertz(current_enemy(HP, Atk, Def)).
 
 damage_enemy(X) :-
   current_enemy(HP, Atk, Def),
+  current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def),
   HP1 is HP - X,
+  retract(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def)),
   retract(current_enemy(HP, Atk, Def)),
-  assertz(HP1, Atk, Def).
+  assertz(current_enemy_stat(EnemyID,Name,EnemyLvl,HP1,Atk,Def)),
+  assertz(current_enemy(HP1, Atk, Def)).
+
 
 set_def_enemy(X) :-
   current_enemy(HP, Atk, Def),
+  current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def),
+  retract(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def)),
   retract(current_enemy(HP, Atk, Def)),
-  assertz(HP, Atk, X).
+  assertz(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,X)),
+  assertz(current_enemy(HP, Atk, X)).
 
 generate_random_enemy :-
   % randomize ID

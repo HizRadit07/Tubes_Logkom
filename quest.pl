@@ -1,10 +1,10 @@
 :-dynamic(quest_status / 1).
 :-dynamic(c_quest / 3).
-:-dynamic(quest / 4).
+:-dynamic(quest / 5).
 
 quest_status(0). /*0 : tidak ada ctive quest, 1 : sedang ada active quest*/
 
-/*quest(Goblin, Slime, direwolf)*/
+/*quest(Goblin, Slime, direwolf, Reward, XP)*/
 
 /*Membuat quest secara random*/
 make_quest :-
@@ -21,7 +21,9 @@ make_quest :-
   D is C +1,
   random(0, D, Bonus),
   Total is Reward + Bonus*100,
-  assertz(quest(Goblin, Slime, Direwolf, Total)), !.
+  random(0, D, XP),
+  XP is XP + D,
+  assertz(quest(Goblin, Slime, Direwolf, Total, XP)), !.
 
 
 goblin_count(X) :-
@@ -80,7 +82,7 @@ near_quest :-
 
 /*Player memilih akan menerima quest atau tidak*/
 offer_quest(2) :-
-  retractall(quest(_,_,_,_)), !.
+  retractall(quest(_,_,_,_, _)), !.
 
 offer_quest(1) :-
   assertz(c_quest(0, 0, 0)),
@@ -92,11 +94,11 @@ quest :-
   near_quest,
   quest_status(0),
   make_quest,
-  quest(Goblin, Slime, Direwolf, Reward),
+  quest(Goblin, Slime, Direwolf, Reward, XP),
   format('Kill ~w Goblin(s)~n', [Goblin]),
   format('Kill ~w Slime(s)~n', [Slime]),
   format('Kill ~w Direwolf(s)~n', [Direwolf]),
-  format('Reward: ~w Gold~n', [Reward]),
+  format('Reward: ~w Gold and ~w Exp~n', [Reward, XP]),
   write('Do you accept this quest? '),nl,
   write('1. Yes'),nl,
   write('2. No'),nl,
@@ -114,16 +116,16 @@ quest :-
   quest_status(1),
   write('Quest Progress'), nl,
   c_quest(Goblin1, Slime1, Direwolf1),
-  quest(Goblin, Slime, Direwolf, Reward),
+  quest(Goblin, Slime, Direwolf, Reward, XP),
   format('Kill Goblin(s): ~w/~w~n', [Goblin1, Goblin]),
   format('Kill Slime(s): ~w/~w~n', [Slime1, Slime]),
   format('Kill Direwolf(s): ~w/~w~n', [Direwolf1, Direwolf]),
-  format('Reward: ~w Gold~n', [Reward]), !.
+  format('Reward: ~w Gold and ~w Exp~n', [Reward, XP]), !.
 
 /*Mengecek apakah quest sudah terpenuhi, dipanggil setelah record kill*/
 check_quest :-
   c_quest(Goblin1, Slime1, Direwolf1),
-  quest(Goblin, Slime, Direwolf, Reward),
+  quest(Goblin, Slime, Direwolf, Reward, XP),
   Goblin =< Goblin1,
   Slime =< Slime1,
   Direwolf =< Direwolf1,
@@ -131,8 +133,9 @@ check_quest :-
   assertz(quest_status(0)),
   retract(c_quest(Goblin, Slime, Direwolf)),
   add_gold(Reward),
+  add_xp(XP),
   write('Quest completed!'),nl,
-  format('You earn ~w gold~n', [Reward]),!.
+  format('You earn ~w gold and ~w Exp~n', [Reward, XP]),!.
 
 check_quest :-
   !.
