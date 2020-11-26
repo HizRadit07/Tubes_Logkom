@@ -6,11 +6,13 @@
 /* meetEnemy itu pas ketemu enemy, ada 2 pilihan command fight sama run */
 /* fight itu pas gagal run atau emang milih fight ada pilihan attack, specialAttack, usePotion, run */
 /* use atk potion belum */
-
+turn(-1).
+gameState(notStart).
+usedSpecialatk(-1,enemy).
 /* Buat set GameState nya, baru kepikiran start, meetEnemy, fight */
 setGameState(State) :-
-    retract((gameState(_))),
-    assertz(game(State)), !.
+    retract(gameState(_)),
+    assertz(gameState(State)), !.
 
 /* Inisialisasi battle */
 startBattle :-
