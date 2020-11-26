@@ -24,6 +24,39 @@ encounter :-
     write(Def),nl,
 
     write('Type "fight" to begin battle or "run" to run'),
-    setGameState(meetEnemy).
+    setGameState(meetEnemy), !.
 
     /*@PRANA NANTI SAMBUNGIN KE BATTLENYA DI LINE YG INI*/
+near_boss :-
+  map_object(X, Y, 'P'),
+  A is X + 1,
+  map_object(A, Y, 'D'),!.
+
+near_boss :-
+  map_object(X, Y, 'P'),
+  A is X - 1,
+  map_object(A, Y, 'D'),!.
+
+near_boss :-
+  map_object(X, Y, 'P'),
+  A is Y + 1,
+  map_object(X, A, 'D'),!.
+
+near_boss :-
+  map_object(X, Y, 'P'),
+  A is Y - 1,
+  map_object(X, A, 'D'),!.
+
+
+dungeon :-
+  near_boss,
+  character_level(Lvl),
+  Lvl > 14,
+  set_enemy(4, 15),
+  write('Starting Boss fight.'), nl,
+  setGameState(meetEnemy),
+  fight, !.
+
+dungeon :-
+  near_boss,
+  write('You are not ready yet, come back when you are stronger.'), nl, !.
