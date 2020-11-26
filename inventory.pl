@@ -11,6 +11,12 @@
     armor(ID,Nama,Class,Stat)
     accesories(ID,Nama,Class,Stat)
 */
+weapon(_, none, _, 0).
+
+armor(_, none, _, 0).
+
+accesories(_,none,_,0).
+
 id_item(1,'Sword').
 id_item(2,'Black Sword').
 id_item(3,'Great Sword').

@@ -6,11 +6,12 @@
 :- dynamic(character_gold/1).
 :- dynamic(current_weapon/1).
 :- dynamic(current_armor/1).
+:- dynamic(current_accesories/1).
 
 % current_class(ID,Nama)
-current_class(1,'swordsman').
-current_class(2,'archer').
-current_class(3,'sorcerer').
+current_class(1,'Swordsman').
+current_class(2,'Archer').
+current_class(3,'Sorcerer').
 
 character_class(1, 90, 20, 30). % /*classID, hp, atk, def*/
 character_class(2, 80, 30, 30).
@@ -110,20 +111,21 @@ add_base_stat(X, Y, Z) :-
   retract(character_status(Class, A, B, C)),
   assertz(character_status(Class, A1, B1, C1)),!.
 
-weapon(none, _, 0).
-weapon(greatsword, 1, 25).
-armor(none, _, 0).
+
 
 
 /*Equipment*/
 current_weapon(none).
 current_armor(none).
+current_accesories(none).
+
 
 equip_weapon(Weapon) :-
-  weapon(Weapon, Class, Atk),
-  character_status(Class, _, _, _),
+  weapon(_, Weapon, Class, Atk),
+  current_class(ClassID, Class),
+  character_status(ClassID, _, _, _),
   current_weapon(X),
-  weapon(X, _, A),
+  weapon(_, X, _, A),
   Y is A * -1,
   add_char_atk(Y),
   retract(current_weapon(X)),
@@ -131,15 +133,40 @@ equip_weapon(Weapon) :-
   add_char_atk(Atk),!.
 
 equip_armor(Armor) :-
-  armor(Armor, Class, Def),
-  character_status(Class, _, _, _),
+  armor(_, Armor, Class, Def),
+  current_class(ClassID, Class),
+  character_status(ClassID, _, _, _),
   current_armor(X),
-  armor(X, _, A),
+  armor(_, X, _, A),
   Y is A * -1,
   add_char_def(Y),
   retract(current_armor(X)),
   assertz(current_armor(Armor)),
   add_char_def(Def),!.
+
+equip_accesories(Accesories) :-
+  accesories(_, Accesories, Class, HP),
+  current_class(ClassID, Class),
+  character_status(ClassID, _, _, _),
+  current_accesories(X),
+  accesories(_, X, _, A),
+  Y is A * -1,
+  add_base_stat(Y,0,0),
+  retract(current_accesories(X)),
+  assertz(current_accesories(Accesories)),
+  add_base_stat(HP,0,0),!.
+
+equip(X) :-
+  weapon(_, X, _, _),
+  equip_weapon(X),!.
+
+equip(X) :-
+  armor(_, X, _, _),
+  equip_armor(X),!.
+
+equip(X) :-
+    accesories(_, X, _, _),
+    equip_accesories(X),!.
 
 status :-
   character_status(Class, HP, Atk, Def),

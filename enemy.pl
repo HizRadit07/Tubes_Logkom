@@ -75,3 +75,41 @@ generate_random_enemy :-
   assertz(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def)),
   retract(current_enemy(_,_,_)),
   assertz(current_enemy(HP,Atk,Def)).
+
+
+
+/*http://www.newthinktank.com/2015/08/learn-prolog-one-video/*/
+read_file(File) :-
+        open(File, read, Stream),
+
+        % Get char from the stream
+        get_char(Stream, Char1),
+
+        % Outputs the characters until end_of_file
+        process_stream(Char1, Stream),
+        close(Stream).
+
+% Continue getting characters until end_of_file
+
+% ! or cut is used to end backtracking or this execution
+
+process_stream(end_of_file, _) :- !.
+
+process_stream(Char, Stream) :-
+        write(Char),
+        get_char(Stream, Char2),
+        process_stream(Char2, Stream).
+
+
+print_enemy(1) :-
+  read_file('goblin.txt'). /*https://www.oocities.org/spunk1111/people.htm*/
+
+print_enemy(2) :-
+  read_file('slime.txt'). /*https://textart.sh/topic/slime*/
+
+print_enemy(3) :-
+  read_file('direwolf.txt'). /*www.asciiart.eu*/
+
+
+print_enemy(4) :-
+  read_file('dragon.txt'). /*www.asciiart.eu*/

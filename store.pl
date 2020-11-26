@@ -24,7 +24,7 @@ potion:-
         )
     ).
 
-% potion fail state    
+% potion fail state
 potion:-
     in_shop(false),!,
     write('*random Shopkeeper whisper*'),nl,
@@ -54,16 +54,30 @@ attackPotion:-
     write('*random Shopkeeper whisper*'),nl,
     write('There is a time and place for everything, but not now.'),nl.
 
+near_shop :-
+  map_object(X, Y, 'P'),
+  A is X + 1,
+  map_object(A, Y, 'S'),!.
+
+near_shop :-
+  map_object(X, Y, 'P'),
+  A is X - 1,
+  map_object(A, Y, 'S'),!.
+
+near_shop :-
+  map_object(X, Y, 'P'),
+  A is Y + 1,
+  map_object(X, A, 'S'),!.
+
+near_shop :-
+  map_object(X, Y, 'P'),
+  A is Y - 1,
+  map_object(X, A, 'S'),!.
+
+
 shop:-
     /*Ngecek w,a,s,d ada shop apa nggak */
-    map_object(X,Y,'P'),
-    Xplus is X+1,
-    Xmin is X-1,
-    Yplus is Y+1,
-    Ymin is Y-1,
-    (
-        
-    ),!,
+    near_shop,
     retract(in_shop(false)),
     assertz(in_shop(true)),
     write('Welcome to the Gravekeeper Shop!'),nl,
@@ -183,4 +197,4 @@ gacha:-
 gacha:-
     in_shop(false),!,
     write('*random Shopkeeper whisper*'),nl,
-    write('There is a time and place for everything, but not now.'),nl.    
+    write('There is a time and place for everything, but not now.'),nl.

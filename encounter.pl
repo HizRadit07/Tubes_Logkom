@@ -8,8 +8,10 @@ encounter :-
 
     % If encounter, generate random enemy
     generate_random_enemy,
-    current_enemy_stat(_,Name,Lvl,HP,Atk,Def),
+    current_enemy_stat(ID,Name,Lvl,HP,Atk,Def),
     enemy_status(_, Name, Level, HP, Atk, Def),
+
+    print_enemy(ID),
 
     write('you encountered a '),
     write(Name),nl,
@@ -22,6 +24,7 @@ encounter :-
     write(Atk),nl,
     write('Defense: '),
     write(Def),nl,
+
 
     write('Type "fight" to begin battle or "run" to run'),
     setGameState(meetEnemy), !.
@@ -53,6 +56,7 @@ dungeon :-
   character_level(Lvl),
   Lvl > 14,
   set_enemy(4, 15),
+  print_enemy(4),
   write('Starting Boss fight.'), nl,
   setGameState(meetEnemy),
   fight, !.
