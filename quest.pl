@@ -22,8 +22,8 @@ make_quest :-
   random(0, D, Bonus),
   Total is Reward + Bonus*100,
   random(0, D, XP),
-  XP is XP + D,
-  assertz(quest(Goblin, Slime, Direwolf, Total, XP)), !.
+  XP1 is XP + D*100,
+  assertz(quest(Goblin, Slime, Direwolf, Total, XP1)), !.
 
 
 goblin_count(X) :-
@@ -80,6 +80,8 @@ near_quest :-
   A is Y - 1,
   map_object(X, A, 'Q'),!.
 
+near_quest :- !, fail.
+
 /*Player memilih akan menerima quest atau tidak*/
 offer_quest(2) :-
   retractall(quest(_,_,_,_, _)), !.
@@ -91,8 +93,8 @@ offer_quest(1) :-
 
 /*Player belum punya quest, dan berada di dekat quest point. Player ditawari sebuah quest*/
 quest :-
-  near_quest,
   quest_status(0),
+  near_quest,
   make_quest,
   quest(Goblin, Slime, Direwolf, Reward, XP),
   format('Kill ~w Goblin(s)~n', [Goblin]),

@@ -69,7 +69,9 @@ generate_random_enemy :-
   assertz(current_enemy_class(EnemyID,Name)),
 
   % randomize Level
-  random(1,4,EnemyLvl),
+  character_level(CharLvl),
+  A is CharLvl + 1,
+  random(1,A,EnemyLvl),
   enemy_status(EnemyID,Name,EnemyLvl,HP,Atk,Def),
   retractall(current_enemy_stat(_,_,_,_,_,_)),
   assertz(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def)),
