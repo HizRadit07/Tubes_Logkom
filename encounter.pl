@@ -9,7 +9,7 @@ encounter :-
     % If encounter, generate random enemy
     generate_random_enemy,
     current_enemy_stat(ID,Name,Lvl,HP,Atk,Def),
-    enemy_status(_, Name, Level, HP, Atk, Def),
+    /*enemy_status(_, Name, Level, HP, Atk, Def),*/
 
     print_enemy(ID),
 

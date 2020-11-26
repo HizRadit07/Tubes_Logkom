@@ -65,15 +65,15 @@ generate_random_enemy :-
   % randomize ID
   random(1,4,EnemyID),
   enemy_class(EnemyID,Name),
-  retract(current_enemy_class(_,_)),
+  retractall(current_enemy_class(_,_)),
   assertz(current_enemy_class(EnemyID,Name)),
 
   % randomize Level
   random(1,4,EnemyLvl),
   enemy_status(EnemyID,Name,EnemyLvl,HP,Atk,Def),
-  retractall(current_enemy_stat(_,_,_,_,_)),
+  retractall(current_enemy_stat(_,_,_,_,_,_)),
   assertz(current_enemy_stat(EnemyID,Name,EnemyLvl,HP,Atk,Def)),
-  retract(current_enemy(_,_,_)),
+  retractall(current_enemy(_,_,_)),
   assertz(current_enemy(HP,Atk,Def)).
 
 

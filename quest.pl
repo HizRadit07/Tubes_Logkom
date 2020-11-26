@@ -124,6 +124,7 @@ quest :-
 
 /*Mengecek apakah quest sudah terpenuhi, dipanggil setelah record kill*/
 check_quest :-
+  quest_status(1),
   c_quest(Goblin1, Slime1, Direwolf1),
   quest(Goblin, Slime, Direwolf, Reward, XP),
   Goblin =< Goblin1,

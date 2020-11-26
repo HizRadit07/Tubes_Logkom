@@ -74,7 +74,7 @@ special_attack :-
 
 special_attack :-
     gameState(fight),
-    turn(X), Z is (X+2)/2 mod 3, Z =\= 0, 
+    turn(X), Z is (X+2)/2 mod 3, Z =\= 0,
     write('You can use special attack '), write(Z), write(' turn left').
 
 special_attack :-
@@ -96,7 +96,7 @@ enemyAttack :-
     set_char_hp(NewHP),
     set_char_def(Newdef_player),
     cekStatus, !.
-    
+
 /* enemy & player turn */
 enemyTurn :-
     write('Enemy attack'), nl,
@@ -117,7 +117,8 @@ winBattle :-
     write('You won the battle'), nl,
     current_enemy_stat(_,Classenemy,_,_,_,_),
     current_enemy(HP_enemy, Atk_enemy, Def_enemy),
-    recorn_kill(Classenemy),
+    record_kill(Classenemy),
+    check_quest,
     setGameState(start).
 
 
@@ -135,7 +136,7 @@ battle :-
 cekStatus :-
     current_enemy(HP_enemy,_,_),
     character_status(_,HP_player,_,_),
-    
+
     ((HP_player =< 0 -> failState);
     (HP_enemy =< 0 -> winBattle; nextTurn, battle)), !.
 
@@ -162,6 +163,3 @@ usePotion :-
     character_status(_,HP_player,_,_),
     base_stat(BaseHP,_,_),
     ((N =\= 0) -> ((((HP_player+100 =< BaseHP) -> NewHP is HP_player+100); NewHP is BaseHP), write('You heal 100 HP'), nl, set_char_hp(NewHP), consume_potion, nextTurn, battle);write('You dont have enough potion'), nl, battle).
-    
-    
-
