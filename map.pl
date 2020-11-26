@@ -103,7 +103,8 @@ draw_map :- draw_point(0, 0).
 
 
 /*movement codes*/
-
+wall_flag :-
+    write('There\'s  a wall! Type \'map\' to look at your current position!').
 /*w*/
 w:-
 	start_flag(true),
@@ -122,6 +123,8 @@ w:-
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
+w:-
+	 wall_flag.
 /*s*/
 s :-
 	start_flag(true),	
@@ -140,6 +143,8 @@ s :-
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
+s:-
+	wall_flag.
 /*a*/
 a :-
 	start_flag(true),
@@ -158,6 +163,8 @@ a :-
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
+a:-
+	wall_flag.
 /*d*/
 d:-
 	start_flag(true),
@@ -176,3 +183,5 @@ d :-
     start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
+d:-
+	wall_flag.
