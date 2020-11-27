@@ -17,6 +17,7 @@ help:-
     write('# 12. shop.      : masuk ke dalam toko                                         #'),nl,
     write('# 13. exitShop.  : keluar dari toko                                            #'),nl,
     write('# 14. equip("itemname"). : equip suatu item (ganti kutip 2 dengan kutip 1)     #'),nl,
+    write('# 15. dungeon.   : Masuk ke dungeon untuk melawan boss dragon                  #'),nl,
     write('################################################################################'),nl, nl,
 
     write('################################################################################'),nl,
