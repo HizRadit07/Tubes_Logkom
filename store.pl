@@ -7,8 +7,10 @@ generate_number(53).
 in_shop(false).
 
 potion:-
-    in_shop(true),!,
+    in_shop(true),
     character_gold(X),
+    item_storage(M),
+    M<100,!,
     (
         ((X<10)->
             write('Your Gold is not enough to buy a Potion.'),nl
@@ -24,15 +26,23 @@ potion:-
         )
     ).
 
-% potion fail state
+% potion fail state not in shop
 potion:-
     in_shop(false),!,
     write('*random Shopkeeper whisper*'),nl,
     write('There is a time and place for everything, but not now.'),nl.
 
+% potion fail state storage full
+potion:-
+    item_storage(M),
+    M>=100,!,
+    write('I am sorry, Sir. But Your Inventory is full.'),nl.
+
 attackPotion:-
-    in_shop(true),!,
+    in_shop(true),
     character_gold(X),
+    item_storage(M),
+    M<100,!,
     (
         ((X<15)->
             write('Your Gold is not enough to buy an Attaack Potion.'),nl
@@ -48,11 +58,17 @@ attackPotion:-
         )
     ).
 
-% attackPotion fail state
+% attackPotion fail state not in shop
 attackPotion:-
     in_shop(false),!,
     write('*random Shopkeeper whisper*'),nl,
     write('There is a time and place for everything, but not now.'),nl.
+
+% attackPotion fail state storage full
+attackPotion:-
+    item_storage(M),
+    M>=100,!,
+    write('I am sorry, Sir. But Your Inventory is full.'),nl.
 
 near_shop :-
   map_object(X, Y, 'P'),
@@ -77,7 +93,7 @@ near_shop :-
 
 shop:-
     /*Ngecek w,a,s,d ada shop apa nggak */
-    near_shop,
+    near_shop,!,
     retract(in_shop(false)),
     assertz(in_shop(true)),
     write('Welcome to the Gravekeeper Shop!'),nl,
@@ -149,8 +165,10 @@ elemt(X,_A,Result):-
 gacha:-
 /*  jadi gacha ini teknisnya dia bakal ngerandom list possible itemnya
     terus ntar keluarin headnya gitu*/
-    in_shop(true),!,
+    in_shop(true),
     character_gold(Gold),
+    item_storage(Storage),
+    Storage<100,!,
     (
         ((Gold<100)->
             write('Your Gold is not enough to buy a gacha.'),nl
@@ -193,8 +211,14 @@ gacha:-
         )
     ).
 
-% fail state gacha
+% fail state gacha not in shop
 gacha:-
     in_shop(false),!,
     write('*random Shopkeeper whisper*'),nl,
     write('There is a time and place for everything, but not now.'),nl.
+
+% fail state gacha full storage
+gacha:-
+    item_storage(M),
+    M>=100,!,
+    write('I am sorry, Sir. But Your Inventory is full.'),nl.
