@@ -187,5 +187,5 @@ inventory:-
     show_bag(Bag),
     total_potions(N),
     write('you have '),write(N),write(' potion(s).'),nl,
-    total_attpotions(N),
-    write('you have '),write(N),write(' attack potion(s).'),nl,!.
+    total_attpotions(N1),
+    write('you have '),write(N1),write(' attack potion(s).'),nl,!.

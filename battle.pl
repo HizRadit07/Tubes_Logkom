@@ -119,7 +119,7 @@ special_attack :-
     gameState(fight),
     cekSpecialatt(R),
     R is 0,
-    turnspecial(X,0), 
+    turnspecial(X,0),
     Z is 3-X,
     write('You can use special attack '), write(Z), write(' turn left'), nl, !.
 
@@ -144,14 +144,14 @@ enemyAttack :-
     set_char_hp(NewHP),
     set_char_def(Newdef_player),
     cekStatus, !.
-    
+
 /* enemy & player turn */
 enemyTurn :-
     write('Enemy attack'), nl,
     enemyAttack, !.
 
 playerTurn :-
-    write('Type "attack", "special_attack", "run", or "usePotion"'), nl,
+    write('Type "attack", "special_attack", "run",  "usePotion"', or "useAttackPotion"), nl,
     hpStat,
     !.
 
@@ -162,12 +162,22 @@ failState :-
     halt, !.
 
 winBattle :-
-    write('You won the battle'), nl,
+    current_enemy_stat(4,Classenemy,_,_,_,_),
+    current_enemy(_, _, _),
+    write('Congratulation, you have slained the dragon and save the world!'), nl,
+    setGameState(start),!.
+
+
+winBattle :-
     current_enemy_stat(_,Classenemy,_,_,_,_),
     current_enemy(_, _, _),
+    write('You won the battle'), nl,
     record_kill(Classenemy),
     check_quest,
-    setGameState(start).
+    setGameState(start),
+    equip_stat(Atk, Def),
+    set_char_atk(Atk),
+    set_char_def(Def),!.
 
 
 /* Next turn */
@@ -186,7 +196,7 @@ battle :-
 cekStatus :-
     current_enemy(HP_enemy,_,_),
     character_status(_,HP_player,_,_),
-    
+
     (HP_player =< 0 -> failState;
      HP_enemy =< 0 -> winBattle; nextTurn, battle), !.
 
@@ -213,10 +223,29 @@ usePotion :-
     current_enemy(HP_enemy, Atk_enemy, Def_enemy),*/
     character_status(_,HP_player,_,_),
     base_stat(BaseHP,_,_),
-    (N =\= 0 -> 
+    (N =\= 0 ->
         (HP_player+100 =< BaseHP -> NewHP is HP_player+100; NewHP is BaseHP), write('You heal 100 HP'), nl,
          set_char_hp(NewHP), consume_potion, nextTurn, battle;
          write('You dont have enough potion'), nl, battle).
-    
-    
 
+
+usePotion :-
+  gameState(start),
+  total_potions(N),
+  character_status(_,HP_player,_,_),
+  base_stat(BaseHP,_,_),
+  (N =\= 0 ->
+      (HP_player+100 =< BaseHP -> NewHP is HP_player+100; NewHP is BaseHP), write('You heal 100 HP'), nl,
+       set_char_hp(NewHP), consume_potion;
+       write('You dont have enough potion'), nl).
+
+useAttackPotion :-
+  gameState(fight),
+  total_attpotions(N),
+  /*current_enemy_stat(_,Classenemy,_,_,_,_),
+  current_enemy(HP_enemy, Atk_enemy, Def_enemy),*/
+
+  (N =\= 0 ->
+      (add_char_atk(15)), write('You gain 15 attack'), nl,
+       consume_attpotions, nextTurn, battle;
+       write('You dont have enough attack potion'), nl, battle).

@@ -1,5 +1,6 @@
 /*encounter.pl*/
 /*set to randomly encounter*/
+:-dynamic(dragon_dead/1).
 
 encounter :-
     % Randomize encounter status
@@ -50,6 +51,13 @@ near_boss :-
   A is Y - 1,
   map_object(X, A, 'D'),!.
 
+dragon_dead(0).
+
+check_dragon :-
+  current_enemy(HP,_,_),
+  HP =< 0,
+  retract(dragon_dead(0)),
+  assertz(dragon_dead(1)).
 
 dungeon :-
   near_boss,

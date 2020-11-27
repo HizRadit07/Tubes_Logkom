@@ -7,6 +7,7 @@
 :- dynamic(current_weapon/1).
 :- dynamic(current_armor/1).
 :- dynamic(current_accesories/1).
+:- dynamic(equip_stat/2).
 
 % current_class(ID,Nama)
 current_class(1,'Swordsman').
@@ -19,6 +20,7 @@ character_class(3, 80, 40, 20).
 
 character_status(none, 0, 0, 0). % /*class, hp, atk, def*/
 base_stat(0, 0, 0). % /*hp, atk, def*/
+equip_stat(0,0).
 
 character_level(1).
 
@@ -62,6 +64,8 @@ choose_class(X) :-
   character_class(X, A, B, C),
   retract(base_stat(0, 0, 0)),
   assertz(base_stat(A, B, C)),
+  retract(equip_stat(0,0)),
+  assertz(equip_stat(B,C)),
   retract(character_status(none, 0, 0, 0)),
   assertz(character_status(X, A, B, C)).
 
@@ -95,6 +99,11 @@ set_char_def(X) :-
   character_status(A, B, C, D),
   retract(character_status(A, B, C, D)),
   assertz(character_status(A, B, C, X)),!.
+
+set_char_atk(Atk) :-
+  character_status(A, B, C, D),
+  retract(character_status(A, B, C, D)),
+  assertz(character_status(A, B, Atk, D)),!.
 
 /*Menambah Base stat*/
 add_base_stat(X, Y, Z) :-
@@ -130,7 +139,10 @@ equip_weapon(Weapon) :-
   add_char_atk(Y),
   retract(current_weapon(X)),
   assertz(current_weapon(Weapon)),
-  add_char_atk(Atk),!.
+  add_char_atk(Atk),
+  character_status(_,_,C,D),
+  retractall(equip_stat(_,_)),
+  assertz(equip_stat(C,D)),!.
 
 equip_armor(Armor) :-
   armor(_, Armor, Class, Def),
@@ -142,7 +154,10 @@ equip_armor(Armor) :-
   add_char_def(Y),
   retract(current_armor(X)),
   assertz(current_armor(Armor)),
-  add_char_def(Def),!.
+  add_char_def(Def),
+  character_status(_,_,C,D),
+  retractall(equip_stat(_,_)),
+  assertz(equip_stat(C,D)),!.
 
 equip_accesories(Accesories) :-
   accesories(_, Accesories, Class, HP),

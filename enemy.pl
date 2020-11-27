@@ -39,7 +39,7 @@ enemy_status(ID,'direwolf', A, B, C, D) :-
 set_enemy(ID, Level) :-
   enemy_status(ID,Class, Level, HP, Atk, Def),
   retractall(current_enemy(_,_,_)),
-  retractall(current_enemy_stat(_,_,_,_,_)),
+  retractall(current_enemy_stat(_,_,_,_,_,_)),
   assertz(current_enemy_stat(ID,Class,Level,HP,Atk,Def)),
   assertz(current_enemy(HP, Atk, Def)).
 
