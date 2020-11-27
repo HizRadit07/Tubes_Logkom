@@ -1,5 +1,10 @@
-# Tubes_Logkom
-repository untuk penyelesaian tugas besar logika komputasional
+# Genshin Prolog
+# Tubes Logika Komputasional (IF2121)
+Kelompok 11 - K3
+M. Rafli Zamzami (13519067)
+Hizkia Raditya Pratama Roosadi (13519087)
+Ahmad Saladin (13519187)
+Prana Gusriana (13519195)
 
 Untuk menjalankan program jalankan main.pl dalam GNU Prolog console.
-untuk memulai permainan ketikkan start.
+Untuk memulai permainan ketikkan start.
