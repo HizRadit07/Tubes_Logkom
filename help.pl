@@ -13,8 +13,12 @@ help:-
     write('# 7. a.          : gerak ke kiri 1 langkah                                     #'),nl,
     write('# 8. inventory.  : menampilkan inventory anda                                  #'),nl,
     write('# 10. help.      : menampilkan segala bantuan                                  #'),nl,
+    write('# 11. quest.     : menampilkan menu quest                                      #'),nl,
+    write('# 12. shop.      : masuk ke dalam toko                                         #'),nl,
+    write('# 13. exitShop.  : keluar dari toko                                            #'),nl,
+    write('# 14. equip("itemname"). : equip suatu item (ganti kutip 2 dengan kutip 1)     #'),nl,
     write('################################################################################'),nl, nl,
-    
+
     write('################################################################################'),nl,
     write('#                              In-Battle Commands                              #'),nl,
     write('# 1. attack.        : menyerang lawan dengan attack biasa                      #'),nl,

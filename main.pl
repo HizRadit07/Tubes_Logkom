@@ -46,6 +46,7 @@ start:-
     write('# 7. a.          : gerak ke kiri 1 langkah                                     #'),nl,
     write('# 8. inventory.  : menampilkan inventory anda                                  #'),nl,
     write('# 10. help.      : menampilkan segala bantuan                                  #'),nl,
+    write('# 11. quest.      : menampilkan menu quest                                     #'),nl,
     write('################################################################################'),nl, nl,
 
     retract(start_flag(false)),
@@ -53,11 +54,14 @@ start:-
     asserta(start_flag(true)),
 
     % choose class
+    repeat,
     write('Welcome traveller. please choose your class'),nl,
     write('1. Swordsman'),nl,
     write('2. Archer'),nl,
     write('3. Sorcerer'),nl,
     read(Class),
+    Class =<3,
+    Class >= 1,
 
     % choose the class
     current_class(Class,ClassName),

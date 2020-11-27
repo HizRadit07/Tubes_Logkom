@@ -101,7 +101,8 @@ shop:-
     write('What do you want to buy, Young Explorer?'),nl,
     write('1. gacha. (100 Gold)'),nl,
     write('2. potion. (10 Gold)'),nl,
-    write('3. attackPotion. (15 Gold)'),nl.
+    write('3. attackPotion. (15 Gold)'),nl,
+    write('type "gacha.", "potion."", or "attackPotion."'), nl.
 
 % shop fail state
 shop:-
