@@ -108,6 +108,7 @@ wall_flag :-
 /*w*/
 w:-
 	start_flag(true),
+	in_shop(false),
 	map_object(X,Y,'P'),
     YNew is Y-1,
     (\+ map_object(X, YNew, 'Q')),
@@ -125,10 +126,14 @@ w:-
     !,
     write('Please start the game. Type \'start.\'').
 w:-
-	 wall_flag, nl, map.
+	in_shop(false),wall_flag, nl, map.
+w:-
+	in_shop(true),!,
+	write('You are in shop. Please use exitShop command first to leave.'),nl.
 /*s*/
 s :-
-	start_flag(true),	
+	start_flag(true),
+	in_shop(false),	
 	map_object(X,Y,'P'),
     YNew is Y+1,
     (\+ map_object(X, YNew, 'Q')),
@@ -146,10 +151,14 @@ s :-
     !,
     write('Please start the game. Type \'start.\'').
 s:-
-	wall_flag, nl, map.
+	in_shop(false),wall_flag, nl, map.
+s:-
+	in_shop(true),!,
+	write('You are in shop. Please use exitShop command first to leave.'),nl.
 /*a*/
 a :-
 	start_flag(true),
+	in_shop(false),
 	map_object(X,Y,'P'),
     XNew is X-1,
     (\+ map_object(XNew, Y, 'Q')),
@@ -167,10 +176,14 @@ a :-
     !,
     write('Please start the game. Type \'start.\'').
 a:-
-	wall_flag, nl, map.
+	in_shop(false),wall_flag, nl, map.
+a:-
+	in_shop(true),!,
+	write('You are in shop. Please use exitShop command first to leave.'),nl.
 /*d*/
 d:-
 	start_flag(true),
+	in_shop(false),
     map_object(X,Y,'P'),
     XNew is X+1,
     (\+ map_object(XNew, Y, 'Q')),
@@ -187,4 +200,7 @@ d :-
     !,
     write('Please start the game. Type \'start.\'').
 d:-
-	wall_flag, nl, map.
+	in_shop(false),wall_flag, nl, map.
+d:-
+	in_shop(true),!,
+	write('You are in shop. Please use exitShop command first to leave.'),nl.
