@@ -117,14 +117,15 @@ w:-
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(X,YNew,'P')),
-	encounter.
+	(encounter -> !; map).
+
 
 w:-
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
 w:-
-	 wall_flag.
+	 wall_flag, nl, map.
 /*s*/
 s :-
 	start_flag(true),	
@@ -137,14 +138,15 @@ s :-
     YNew > 0, YNew =< H, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(X,YNew,'P')),
-	encounter.
+	(encounter -> !; map).
+
 
 s :- 
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
 s:-
-	wall_flag.
+	wall_flag, nl, map.
 /*a*/
 a :-
 	start_flag(true),
@@ -157,14 +159,15 @@ a :-
     XNew > 0, XNew =< W, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(XNew,Y,'P')),
-	encounter.
+	(encounter -> !; map).
+
 
 a :-
 	start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
 a:-
-	wall_flag.
+	wall_flag, nl, map.
 /*d*/
 d:-
 	start_flag(true),
@@ -177,11 +180,11 @@ d:-
     XNew > 0, XNew =< W, !,
     retract(map_object(X, Y, 'P')),
     assertz(map_object(XNew,Y,'P')),
-	encounter.
+	(encounter -> !; map).
 
 d :-
     start_flag(false),
     !,
     write('Please start the game. Type \'start.\'').
 d:-
-	wall_flag.
+	wall_flag, nl, map.
