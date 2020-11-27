@@ -54,6 +54,7 @@ levelup(A) :-
   retract(character_level(Z)),
   assertz(character_level(X)),
   add_base_stat(10, 10, 10), % /*Semua stat ditambah 10*/
+  write('Level up, You feel yourself getting stronger'),nl,
   levelup(Y).
 
 levelup(A) :-

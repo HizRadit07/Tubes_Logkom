@@ -22,7 +22,7 @@ make_quest :-
   random(0, D, Bonus),
   Total is Reward + Bonus*100,
   random(0, D, XP),
-  XP1 is XP + D*100,
+  XP1 is  (XP + C)*100,
   assertz(quest(Goblin, Slime, Direwolf, Total, XP1)), !.
 
 
@@ -135,6 +135,7 @@ check_quest :-
   retract(quest_status(1)),
   assertz(quest_status(0)),
   retract(c_quest(Goblin, Slime, Direwolf)),
+  retractall(quest(_,_,_,_,_)),
   add_gold(Reward),
   add_xp(XP),
   write('Quest completed!'),nl,
