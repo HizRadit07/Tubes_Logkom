@@ -151,7 +151,7 @@ enemyTurn :-
     enemyAttack, !.
 
 playerTurn :-
-    write('Type "attack", "special_attack", "run",  "usePotion"', or "useAttackPotion"), nl,
+    write('Type "attack", "special_attack", "run",  "usePotion", or "useAttackPotion"'), nl,
     hpStat,
     !.
 
@@ -162,7 +162,7 @@ failState :-
     halt, !.
 
 winBattle :-
-    current_enemy_stat(4,Classenemy,_,_,_,_),
+    current_enemy_stat(4,_,_,_,_,_),
     current_enemy(_, _, _),
     write('Congratulation, you have slained the dragon and save the world!'), nl,
     setGameState(start),!.
