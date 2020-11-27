@@ -80,7 +80,7 @@ generate_random_enemy :-
 
 
 
-/*http://www.newthinktank.com/2015/08/learn-prolog-one-video/*/
+%/*http://www.newthinktank.com/2015/08/learn-prolog-one-video/*/
 read_file(File) :-
         open(File, read, Stream),
 
@@ -104,14 +104,14 @@ process_stream(Char, Stream) :-
 
 
 print_enemy(1) :-
-  read_file('goblin.txt'). /*https://www.oocities.org/spunk1111/people.htm*/
+  read_file('goblin.txt'). %/*https://www.oocities.org/spunk1111/people.htm*/
 
 print_enemy(2) :-
-  read_file('slime.txt'). /*https://textart.sh/topic/slime*/
+  read_file('slime.txt'). %/*https://textart.sh/topic/slime*/
 
 print_enemy(3) :-
-  read_file('direwolf.txt'). /*www.asciiart.eu*/
+  read_file('direwolf.txt'). %/*www.asciiart.eu*/
 
 
 print_enemy(4) :-
-  read_file('dragon.txt'). /*www.asciiart.eu*/
+  read_file('dragon.txt'). %/*www.asciiart.eu*/
